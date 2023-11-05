@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "*.js": "javascript",
-    "microhttpd.h": "c"
+    "microhttpd.h": "c",
+    "mongoc.h": "c"
   }
 }
