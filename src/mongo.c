@@ -29,11 +29,9 @@ int main() {
 
   mongoc_collection_insert_one(collection, doc, NULL, NULL, NULL);
 
-  // Obtener el BSON creado
   char *str = bson_as_json(doc, NULL);
   printf("%s\n", str);
 
-  // Libera recursos
   bson_destroy(doc);
   mongoc_collection_destroy(collection);
   mongoc_database_destroy(database);
