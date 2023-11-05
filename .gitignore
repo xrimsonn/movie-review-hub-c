@@ -1,1 +1,3 @@
-main.out
+*/**.out
+*.out
+.vscode/
