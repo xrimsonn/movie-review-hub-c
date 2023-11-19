@@ -4,7 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *load_file(const char *filename) {
+#include "http_parser.h"
+
+http_parser_settings settings;
+http_parser parser;
+char *page;
+char *load_page(const char *filename) {
   FILE *htmlFile = fopen(filename, "r");
   if (htmlFile == NULL) {
     perror("Error opening file");
@@ -35,18 +40,68 @@ char *load_file(const char *filename) {
   return buffer;
 }
 
+int on_url(http_parser *parser, const char *at, size_t length) {
+  char url[length + 1];
+  strncpy(url, at, length);
+  url[length] = '\0';
+
+  if (strcmp(url, "/") == 0) {
+    page = load_page("pages/index.html");
+    if (page == NULL) {
+      return MHD_NO;
+    }
+    struct MHD_Response *response;
+  } else if (strcmp(url, "/index") == 0) {
+    page = load_page("pages/index.html");
+    if (page == NULL) {
+      return MHD_NO;
+    }
+    struct MHD_Response *response;
+  } else if (strcmp(url, "/reviews") == 0) {
+    // TODO
+  } else if (strcmp(url, "/create") == 0) {
+    // TODO
+  } else if (strcmp(url, "/delete") == 0) {
+    // TODO
+  } else if (strcmp(url, "/update") == 0) {
+    // TODO
+  } else {
+    page = load_page("pages/404.html");
+    if (page == NULL) {
+      return MHD_NO;
+    }
+    struct MHD_Response *response;
+  }
+  return 0;
+}
+
+void setup_http_parser() {
+  settings.on_url = on_url;
+  http_parser_init(&parser, HTTP_REQUEST);
+  parser.data = NULL;
+}
+
 enum MHD_Result request_handler(void *cls, struct MHD_Connection *connection,
                                 const char *url, const char *method,
                                 const char *version, const char *upload_data,
                                 size_t *upload_data_size, void **con_cls) {
-  char *page = load_file("pages/index.html");
+  setup_http_parser();
+
+  char request[1024];
+  strcpy(request, method);
+  strcat(request, " ");
+  strcat(request, url);
+  strcat(request, " ");
+  strcat(request, version);
+  strcat(request, "\r\nHost: localhost\r\n\r\n");
+
+  http_parser_execute(&parser, &settings, request, strlen(request));
+
+  struct MHD_Response *response;
+
   if (page == NULL) {
     return MHD_NO;
   }
-
-  
-
-  struct MHD_Response *response;
 
   response = MHD_create_response_from_buffer(strlen(page), (void *)page,
                                              MHD_RESPMEM_PERSISTENT);
