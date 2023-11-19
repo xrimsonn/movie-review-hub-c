@@ -9,6 +9,4 @@ TODO
 ## Installation ?
 
 ```bash
-git clone https://github.com/username/project.git
-cd project
-make
+steps...
