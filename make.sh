@@ -6,7 +6,7 @@ MAIN_SOURCE="src/main.c"
 HANDLER_SOURCE="src/handler.c"
 
 # Libraries parameters
-COMPILE_OPTIONS="-lmicrohttpd"
+COMPILE_OPTIONS="-lmicrohttpd -lhttp_parser"
 
 # Compilation command
 gcc -o $OUTPUT_PROGRAM $MAIN_SOURCE $HANDLER_SOURCE $COMPILE_OPTIONS

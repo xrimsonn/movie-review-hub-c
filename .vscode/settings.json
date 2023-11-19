@@ -1,6 +1,11 @@
 {
   "files.associations": {
     "*.js": "javascript",
-    "microhttpd.h": "c"
+    "microhttpd.h": "c",
+    "mongoc.h": "c",
+    "http_parser.h": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c"
   }
 }
