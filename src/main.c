@@ -1,11 +1,11 @@
 #include <microhttpd.h>
 #include <stdio.h>
-#include "handler.h"
 
+#include "handler.h"
 
 int main(int argc, char const *argv[]) {
   struct MHD_Daemon *daemon;
-  daemon = MHD_start_daemon(MHD_USE_SELECT_INTERNALLY, 2264, NULL, NULL,
+  daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, 2264, NULL, NULL,
                             &request_handler, NULL, MHD_OPTION_END);
 
   if (daemon == NULL) {
